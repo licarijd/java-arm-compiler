@@ -31,7 +31,12 @@ def main():
 	
 	print(words)
 
-	getSym(words)
+	try:
+		getSym(words)
+	except:
+		print("Error")
+	
+	
 
 #First check if the word is a number. Then check for reserved words, then reserved symbols. If those aren't possibilities, assume an identifier has been reached.
 def getSym(words):
@@ -212,43 +217,43 @@ def checkForReservedSymbols(symList,words):
 			checkForReservedSymbols(symList,words)
 		elif sym == "&":
 			sys.stdout.write("AndSym\n");
-			urrentBlockPosition+=1;
+			currentBlockPosition+=1;
 			checkForReservedSymbols(symList,words)
 		elif sym == "|":
 			sys.stdout.write("OrSym\n");
-			urrentBlockPosition+=1;
+			currentBlockPosition+=1;
 			checkForReservedSymbols(symList,words)
 		elif sym == ".":
 			sys.stdout.write("PeriodSym\n");
-			urrentBlockPosition+=1;
+			currentBlockPosition+=1;
 			checkForReservedSymbols(symList,words)
 		elif sym == ",":
 			sys.stdout.write("CommaSym\n");
-			urrentBlockPosition+=1;
+			currentBlockPosition+=1;
 			checkForReservedSymbols(symList,words)
 		elif sym == ":":
 			sys.stdout.write("ColonSym\n");
-			urrentBlockPosition+=1;
+			currentBlockPosition+=1;
 			checkForReservedSymbols(symList,words)
 		elif sym == "(":
 			sys.stdout.write("RparenSym\n");
-			urrentBlockPosition+=1;
+			currentBlockPosition+=1;
 			checkForReservedSymbols(symList,words)
 		elif sym == ")":
 			sys.stdout.write("LparenSym\n");
-			urrentBlockPosition+=1;
+			currentBlockPosition+=1;
 			checkForReservedSymbols(symList,words)
 		elif sym == "[":
 			sys.stdout.write("LbrakSym\n");
-			urrentBlockPosition+=1;
+			currentBlockPosition+=1;
 			checkForReservedSymbols(symList,words)
 		elif sym == "]":
 			sys.stdout.write("RbrakSym\n");
-			urrentBlockPosition+=1;
+			currentBlockPosition+=1;
 			checkForReservedSymbols(symList,words)
 		elif sym == ";":
 			sys.stdout.write("SemicolonSym\n");
-			urrentBlockPosition+=1;
+			currentBlockPosition+=1;
 			checkForReservedSymbols(symList,words)
 	
 
