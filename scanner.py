@@ -62,9 +62,11 @@ def checkForReservedWords(sym, words):
 	global currentPosition
 	global currentBlockPosition
 
+	currentBlockPosition = 0
+
 	checkForNum(sym)
 
-	#print(words)
+	sym = words[currentPosition]
 
 	if sym == "not":
 		sys.stdout.write("NotSym\n");
@@ -183,8 +185,10 @@ def checkForReservedSymbols(symList,words):
 	global currentPosition
 	global currentBlockPosition
 
-	sym = symList[currentBlockPosition]
-	while currentBlockPosition < len(symList):
+	if currentBlockPosition < len(symList):
+
+		sym = symList[currentBlockPosition]
+
 		if sym == "<" or sym == "=" or sym == ">" or sym == "!":
 			checkRelationalOp(words)
 		elif sym == None:
@@ -255,6 +259,9 @@ def checkForReservedSymbols(symList,words):
 			sys.stdout.write("SemicolonSym\n");
 			currentBlockPosition+=1;
 			checkForReservedSymbols(symList,words)
+	else:
+		currentPosition+=1
+		getSym(words)
 	
 
 def checkForNum(sym):
