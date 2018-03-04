@@ -8,6 +8,7 @@
 #METHOD_BODY --> PRINT_STATEMENT '(' STRING_BODY ')'
 #STRING_BODY --> \" . \"
 #IDENTIFIER --> [a-zA-Z]+
+import sys
 
 currentPosition = 0;
 
@@ -106,16 +107,16 @@ def main_method_declaration(sentence):
 
 def method_body():
     print_statement(sentence)
-        if (sentence[currentPosition] == '('):
+    if (sentence[currentPosition] == '('):
+        currentPosition+=1
+        string_body(sentence)
+        if (sentence[currentPosition] == ')'):
             currentPosition+=1
-            string_body(sentence)
-            if (sentence[currentPosition] == ')'):
-                currentPosition+=1
-                return True
-            else:
-                terminate(False, sentence)
+            return True
         else:
             terminate(False, sentence)
+    else:
+        terminate(False, sentence)
 
 
 def string_body():
@@ -132,14 +133,13 @@ def string_body():
         terminate(False, sentence)
 
 def identifier():
+    print "incomplete"
 
 def terminate(res, current):
     if res:
-        sys.stdout.write("type: %s " % sentenceType);
-        sys.stdout.write("val: %s \n" % current[0]);
+        sys.stdout.write("accepted: %s " % current);
     else:
-        sys.stdout.write("type: error ");
-        sys.stdout.write("val: n/a \n");
+        sys.stdout.write("rejected: %s " % current);
         sys.exit();
    
 if __name__ == "__main__": main()
