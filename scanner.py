@@ -1,4 +1,5 @@
 import sys
+import os
 import fileinput
 
 currentPosition = 0;
@@ -40,12 +41,7 @@ def main():
 	try:
 		getSym(words)
 	except:
-		with open('symbols.txt', 'r') as fin:
-    			data = fin.read().splitlines(True)
-		with open('symbols.txt', 'w') as fout:
-    			fout.writelines(data[1:])
 		print("Scanning Complete")
-	
 	
 
 #First check if the word is a number. Then check for reserved words, then reserved symbols. If those aren't possibilities, assume an identifier has been reached.
@@ -71,6 +67,16 @@ def getSym(words):
 		f.close()
 
 		sys.stdout.write("EofSym\n");
+
+		#First line is always blank - remove it
+		with open('symbols.txt', 'r') as fin:
+    			data = fin.read().splitlines(True)
+		with open('symbols.txt', 'w') as fout:
+    			fout.writelines(data[1:])
+
+    		#start the parser, passing in the symbols
+    		os.system('python rdparser.py symbols.txt')
+
 		sys.exit()
 
 
@@ -421,19 +427,19 @@ def checkForReservedSymbols(symList,words):
 		elif sym == "(":
 			#Append the symbol to the output file
 			f = open('symbols.txt','a')
-			f.write('\n' + 'RparenSym')
+			f.write('\n' + 'LparenSym')
 			f.close()
 
-			sys.stdout.write("RparenSym\n");
+			sys.stdout.write("LparenSym\n");
 			currentBlockPosition+=1;
 			checkForReservedSymbols(symList,words)
 		elif sym == ")":
 			#Append the symbol to the output file
 			f = open('symbols.txt','a')
-			f.write('\n' + 'LparenSym')
+			f.write('\n' + 'RparenSym')
 			f.close()
 
-			sys.stdout.write("LparenSym\n");
+			sys.stdout.write("RparenSym\n");
 			currentBlockPosition+=1;
 			checkForReservedSymbols(symList,words)
 		elif sym == "[":
