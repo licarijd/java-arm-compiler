@@ -30,23 +30,38 @@ counter = 0 # for naming new strings
 ARM = open("ARM.out", "w") # write output to file
 
 def putLabel(label, section):
+    global main
+    global data
     """ adds labels for new sections """
     if section == "m":
-        progam += label + "\n"
-    else if section == "d":
+        main += label + "\n"
+        return True
+    elif section == "d":
         data += label + "\n"
+        return True
+    else:
+        return True
 
 def putInstruction(instruction, arg1, arg2):
+    global main
+    global data
+    global regs
     """ adds instructions with proper indenting """
     if instruction == MOV:
         main += "\t" + "MOV " + arg1 + ", " + "#" + str(arg2) + "\n"
         regs[arg1] = arg2
-    else if instruction == LDR:
+        print("addition com[elte")
+    elif instruction == LDR:
         main += "\t" + "LDR " + arg1 + ", " + "=" + "string" + str(counter) + "\n"
-    else if instruction == SWI:
+    elif instruction == SWI:
         main += "\t" + "SWI " + arg1 + "\n"
+    return True
 
 def genPrintStatement(string):
+    global main
+    global data
+    global regs
+    global counter
     """ generates arm code for print statements. the size of the string 
     and the string itself are loaded into registers and then a software
     interrupt is called which performs a system call to print the string """
@@ -55,9 +70,12 @@ def genPrintStatement(string):
     putInstruction(LDR, "R1", None)
     putInstruction(SWI, "0", None)
     regs["R1"] = string
+    print("aaa")
     data += "string" + str(counter) + ":\n"
     data += "\t" + ".ascii " + "\"" + string + "\"" + "\n"
     counter += 1
+    print("aaa")
+    return True
 
 def genProgEntry():
     """ initial lines of ARM code which lead to program entry, flags are 
@@ -67,15 +85,22 @@ def genProgEntry():
     putLabel(".data", "d")
     putInstruction(MOV, "R7", 4)
     putInstruction(MOV, "R0", 1) # setting these registers prepares the os for printing
+    return True
 
 def genProgExit():
     """ set the flag in R7 so that software interrupts now triggers system exit """
     putInstruction(MOV, "R7", 1)
     putInstruction(SWI, "0", None)
+    return True
 
 def genProgram():
+    global main
+    global data
     """ if the program succesfully parses, combine the main program and data
     section to make the full ARM program """
     program = main + data
+    print(main)
+    print(data)
+    print(program)
     ARM.write(program)
 

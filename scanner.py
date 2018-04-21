@@ -4,6 +4,7 @@ import fileinput
 
 currentPosition = 0;
 currentBlockPosition = 0;
+args = ""
 
 def main():
 
@@ -83,6 +84,7 @@ def getSym(words):
 def checkForReservedWords(sym, words):
 	global currentPosition
 	global currentBlockPosition
+	global args
 
 	currentBlockPosition = 0
 
@@ -310,7 +312,8 @@ def checkForReservedWords(sym, words):
 		symList = list(words[currentPosition])
 		checkForReservedSymbols(symList,words)
 	else:
-		#Append the symbol to the output file
+		#Append the symbol to the output file and the global linked list of print arguments
+		args += sym
 		f = open('symbols.txt','a')
 		f.write('\n' + 'IdentSym')
 		f.close()

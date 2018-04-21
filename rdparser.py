@@ -9,6 +9,8 @@
 #STRING_BODY --> \" . \"
 #IDENTIFIER --> [a-zA-Z]+
 import sys
+import generator as CG
+import scanner as SC
 
 currentPosition = 0;
 
@@ -27,7 +29,9 @@ def main():
             del sentence[i]
     
     try:
-       prog(sentence);
+        CG.genProgEntry()
+        print("gen prog entry complete")
+        prog(sentence);
     except:
         print("Error")
 
@@ -159,6 +163,10 @@ def print_statement(sentence):
                                 currentPosition+=1
                                 if (sentence[currentPosition] == 'SemicolonSym'):
                                     currentPosition+=1
+                                    print("ttt")
+                                    print(SC.args)
+                                    CG.genPrintStatement(SC.args)
+                                    #terminate(True, sentence)
                                     method_body(sentence)
                                 else:
                                     terminate(False, sentence[currentPosition])
@@ -179,6 +187,7 @@ def print_statement(sentence):
 
 def end_prog(sentence):
     global currentPosition
+    print("endprog")
     if (sentence[currentPosition] == 'SystemSym'):
         currentPosition+=1
         if (sentence[currentPosition] == 'PeriodSym'):
@@ -193,6 +202,10 @@ def end_prog(sentence):
                             currentPosition+=1
                             if (sentence[currentPosition] == 'SemicolonSym'):
                                 currentPosition+=1
+                                CG.genProgExit()
+                                print("gen prog exit complete")
+                                CG.genProgram()
+                                #terminate(True, sentence)
                                 method_body(sentence)
                             else:
                                 terminate(False, sentence[currentPosition])
@@ -216,7 +229,8 @@ def terminate(res, current):
     global currentPosition
 
     if res:
-        sys.stdout.write("accepted: %s " % current);
+        # sys.stdout.write("accepted: %s " % current);
+        print("gen prog exit begin")
     else:
         sys.stdout.write("rejected: %s " % current);
         sys.exit();
