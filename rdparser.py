@@ -1,12 +1,11 @@
-
-#Java grammar for simple Java programs consisting of only a main method and print statement which prints a String
-
-#PROG --> (IMPORTS identifier)* CLASS_DECLARATION
-#IMPORTS --> 
+#PROG --> IMPORTS* CLASS_DECLARATION
+#IMPORTS --> ‘import’ IDENTIFIER
 #CLASS_DECLARATION --> 'public class' IDENTIFIER '{' MAIN_METHOD_DECLARATION '}'
-#MAIN_METHOD_DECLARATION --> 'public static void main (String[] args) {' METHOD_BODY '}'
-#METHOD_BODY --> PRINT_STATEMENT '(' STRING_BODY ')'
-#STRING_BODY --> \" . \"
+#MAIN_METHOD_DECLARATION --> 'public \. static \. void \. main (String[] args) {' METHOD_BODY '}'
+#METHOD_BODY --> PRINT_STATEMENT | EXIT_STATEMENT | ARITHMETIC_STATEMENT
+#PRINT_STATEMENT --> 'System.out.println(' ( IDENTIFIER ' ' \+ )+ ';'
+#ARITHMETIC_STATEMENT --> 'System.out.println(' ( IDENTIFIER ' ' \+ )+ ';'
+#EXIT_STATEMENT --> 'System.exit(0)' ';'
 #IDENTIFIER --> [a-zA-Z]+
 import sys
 import generator as CG
