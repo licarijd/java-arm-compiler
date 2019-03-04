@@ -1,10 +1,20 @@
 import sys
 import os
 import fileinput
+import random
 
 currentPosition = 0;
 currentBlockPosition = 0;
 args = ""
+
+#search variables
+patHash = 0; #pattern hash value
+txtHash = 0
+M = 0; #pattern length
+Q = random.getrandbits(16); #a large prime
+R = 256; #alphabet size
+RM = 0; #R^(M-1) % Q
+chars = []
 
 def main():
 
@@ -40,6 +50,7 @@ def main():
 	print(words)
 
 	try:
+    		checkIdentifierInitialization("p", words)
 		getSym(words)
 	except:
 		print("Scanning Complete")
@@ -546,5 +557,89 @@ def checkRelationalOp(words):
 		currentBlockPosition+=2;
 		checkForReservedSymbols(symList,words)
 
+def checkIdentifierInitialization(identifier, sentence):
+
+	search("public", sentence)
+
+	"""if search("public", sentence) == search("void", sentence):# or search("declaration", sentence) == search(identifier, sentence):
+		print("exists")
+		return True
+	else:
+		print("dne")
+		return False"""
+
+def hash(key, M, iType):
+
+	print(key)
+		# Compute hash for key[0..M-1].
+	h = 0
+
+	if (iType == "pattern"):
+		for j in range (M):
+			print(R, h, key[j], Q)
+			h = (R * h + ord(key[j])) % Q
+			print (h)
+
+	elif (iType == "text"):
+		for k in range(len(key)):
+			for l in range(len(key[k])):
+				chars.append(key[k][l])
+
+		for j in range (M):
+			print(R, h, chars[j], Q)
+			h = (R * h + ord(chars[j])) % Q
+			print (h)
+
+	"""else:
+		for j in range (M):
+			print(key[j])
+			g = key[j]
+			print(g[0])
+			for i in range (len(key[j])):
+				chars.append(key[j][i])
+				print(R, h, key[j][i], Q)
+				h = (R * h + ord(key[j][i])) % Q
+				print (h)"""
+	return h
+
+def search(pattern, txt):
+	M = len(pattern)
+	#Q = random.getrandbits(16)
+	print("Q: ", Q)
+	RM = 1
+
+	print(M)
+	for i in range(M):
+		RM = (R * RM) % Q
+		print(RM)
+	print("here")
+	patHash = hash(pattern, M, "pattern")
+	print("here3")
+
+	N = len(txt)
+	print(len(txt))
+	print("pathash: " , patHash)
+
+	txtHash = hash(txt, M, "text")
+	if (patHash == txtHash):
+		print ("d0ne")
+		return 0
+
+	print("here39", M, N)
+	for i in range (M-1, len(chars)):
+
+		print(i-M+1, i-4, "word to check: ", chars[i-M+1], chars[i-4], chars[i-3], chars[i-2], chars[i-1], chars[i])
+		
+		#print(txtHash + Q - RM*ord(chars[i-M]) , Q)
+		#Remove leading digit, add trailing digit, check for match.
+		txtHash = (txtHash + Q - RM*ord(chars[i-M]) % Q) % Q
+		#print(txtHash)
+		txtHash = (txtHash*R + ord(chars[i])) % Q
+		print("checking...", txtHash, "patt: ", patHash)
+		if (patHash == txtHash):
+			#if (check(i - M + 1)):
+			print("don3")
+			return i - M + 1; # match
+	return -1
 
 if __name__ == "__main__": main()
