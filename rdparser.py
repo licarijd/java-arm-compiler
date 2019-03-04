@@ -10,17 +10,8 @@
 import sys
 import generator as CG
 import scanner as SC
-import random
 
 currentPosition = 0;
-
-#search variables
-patHash = 0; #pattern hash value
-txtHash = 0
-M = 0; #pattern length
-Q = random.getrandbits(128); #a large prime
-R = 256; #alphabet size
-RM = 0; #R^(M-1) % Q
 
 def main():
     sentence = sys.argv[1]
@@ -37,7 +28,6 @@ def main():
             del sentence[i]
     
     try:
-        checkIdentifierInitialization("test", sentence)
         CG.genProgEntry()
         print("gen prog entry complete")
         prog(sentence);
@@ -193,59 +183,7 @@ def print_statement(sentence):
             terminate(False, sentence[currentPosition])
     else:
         terminate(False, sentence[currentPosition])
-
-def checkIdentifierInitialization(identifier, sentence):
-
-    if search("public", sentence) == search("void", sentence):# or search("declaration", sentence) == search(identifier, sentence):
-        print("exists")
-        return True
-    else:
-        print("dne")
-        return False
    
-
-
-def hash(key, M):
-
-    print(key)
-     # Compute hash for key[0..M-1].
-    h = 0
-    for j in range (M):
-        print(R, h, key[j], Q)
-        h = (R * h + ord(key[j])) % Q
-        print (h)
-    return h
-
-def search(pattern, sentence):
-    M = len(pattern)
-    Q = random.getrandbits(128)
-    RM = 1
-    
-    print(M)
-    for i in range(M):
-        RM = (R * RM) % Q
-        print(RM)
-    print("here")
-    patHash = hash(pattern, M)
-    print("here3")
-
-    N = len(sentence)
-    print(sentence)
-    txtHash = hash(sentence, M)
-    if (patHash == txtHash):
-        print ("d0ne")
-        return 0
-
-    print("here3")
-    for i in range (M, N):
-        #Remove leading digit, add trailing digit, check for match.
-        txtHash = (txtHash + Q - RM*txt.charAt(i-M) % Q) % Q
-        txtHash = (txtHash*R + txt.charAt(i)) % Q
-        if (patHash == txtHash):
-            #if (check(i - M + 1)):
-            return i - M + 1; # match
-    return -1
-
 def end_prog(sentence):
     global currentPosition
     print("endprog")
