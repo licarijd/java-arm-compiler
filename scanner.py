@@ -50,7 +50,7 @@ def main():
 	print(words)
 
 	try:
-    		checkIdentifierInitialization("p", words)
+    		checkIdentifierInitialization("static", words)
 		getSym(words)
 	except:
 		print("Scanning Complete")
@@ -559,7 +559,7 @@ def checkRelationalOp(words):
 
 def checkIdentifierInitialization(identifier, sentence):
 
-	search("public", sentence)
+	search("static", sentence)
 
 	"""if search("public", sentence) == search("void", sentence):# or search("declaration", sentence) == search(identifier, sentence):
 		print("exists")
@@ -609,16 +609,16 @@ def search(pattern, txt):
 	RM = 1
 
 	print(M)
-	for i in range(M):
+	for i in range(1,M):
 		RM = (R * RM) % Q
 		print(RM)
-	print("here")
+	#print("here")
 	patHash = hash(pattern, M, "pattern")
-	print("here3")
+	#print("here3")
 
 	N = len(txt)
 	print(len(txt))
-	print("pathash: " , patHash)
+	#print("pathash: " , patHash)
 
 	txtHash = hash(txt, M, "text")
 	if (patHash == txtHash):
@@ -626,20 +626,24 @@ def search(pattern, txt):
 		return 0
 
 	print("here39", M, N)
-	for i in range (M-1, len(chars)):
+	for i in range (M, len(chars)):
 
 		print(i-M+1, i-4, "word to check: ", chars[i-M+1], chars[i-4], chars[i-3], chars[i-2], chars[i-1], chars[i])
 		
 		#print(txtHash + Q - RM*ord(chars[i-M]) , Q)
 		#Remove leading digit, add trailing digit, check for match.
 		txtHash = (txtHash + Q - RM*ord(chars[i-M]) % Q) % Q
+
+
+
+		
 		#print(txtHash)
 		txtHash = (txtHash*R + ord(chars[i])) % Q
 		print("checking...", txtHash, "patt: ", patHash)
 		if (patHash == txtHash):
 			#if (check(i - M + 1)):
 			print("don3")
-			return i - M + 1; # match
+			return i - M #+ 1; # match
 	return -1
 
 if __name__ == "__main__": main()
